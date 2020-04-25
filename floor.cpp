@@ -13,11 +13,11 @@ MoveResult Floor::checkMoveOnto(Entity *entity, const Position &fromPos, const P
 
 bool Floor::isGoal() const
 {
-	return true;
+	return false;
 }
 
 
 std::string Floor::getGlyph() const
 {
-	return "";
+	return ".";
 }

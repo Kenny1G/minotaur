@@ -20,5 +20,5 @@ bool Goal::isGoal() const
 
 std::string Goal::getGlyph() const
 {
-	return "";
+	return "<";
 }
