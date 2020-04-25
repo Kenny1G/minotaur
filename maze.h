@@ -10,9 +10,15 @@ class Position;
 
 // A Maze is a grid of Tile objects.
 class Maze {
+public:
+	//Typedef to refer to a vector of pointers to Tile objects
+	typedef std::vector<Tile *> TileVec;
 private:
   // TODO: add fields
-
+	
+  int m_width;
+  int m_height;
+  TileVec m_tiles;
   // disallow copy ctor and assignment operator
   Maze(const Maze &);
   Maze &operator=(const Maze &);
@@ -43,6 +49,8 @@ public:
 
 private:
   // Add your own private member functions
+  int posToIndex(const Position &pos) const;
+
 };
 
 #endif

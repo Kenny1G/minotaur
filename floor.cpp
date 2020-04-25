@@ -5,19 +5,16 @@ Floor::Floor()
 Floor::~Floor()
 {}
 
-MoveResult Floor::checkMoveOnto(Entity *entity, const Position &fromPos, const Position &tilePos) const
-{
+MoveResult Floor::checkMoveOnto(Entity *entity, const Position &fromPos, const Position &tilePos) const {
 	return MoveResult::ALLOW;
 }
 
 
-bool Floor::isGoal() const
-{
+bool Floor::isGoal() const {
 	return false;
 }
 
 
-std::string Floor::getGlyph() const
-{
+std::string Floor::getGlyph() const {
 	return ".";
 }
