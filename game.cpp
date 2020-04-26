@@ -1,4 +1,6 @@
 #include "game.h"
+#include "entity.h"
+
 Game::Game()
 {}
 Game::~Game()
