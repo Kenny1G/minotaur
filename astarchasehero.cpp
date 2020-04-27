@@ -2,11 +2,15 @@
 //CS220 Final Project SP20
 //astarchasehero.cpp
 
+
+#include "astarchasehero.h"
+#include "assert.h"
+
 AStarChaseHero::AStarChaseHero() {
 
 }
 
-AstarChaseHero::~AStarChaseHero() {
+AStarChaseHero::~AStarChaseHero() {
 
 }
 

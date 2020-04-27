@@ -1,19 +1,15 @@
 #include "textui.h"
 
 
-TextUI::TextUI()
-{}
-TextUI::~TextUI()
-{}
+TextUI::TextUI() {}
 
-Direction TextUI::getMoveDirection()
-{
+TextUI::~TextUI() {}
+
+Direction TextUI::getMoveDirection() {
 }
 
-void TextUI::displayMessage(const std::string &msg, bool endgame)
-{
+void TextUI::displayMessage(const std::string &msg, bool endgame) {
 }
 
-void TextUI::render(Game *game)
-{
+void TextUI::render(Game *game) {
 }
