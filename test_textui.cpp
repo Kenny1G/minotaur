@@ -21,7 +21,7 @@ const char *m1 =
   "#.....<..#\n"
   "##########\n";
 
-	const char *m2 =
+	const char *m1_maze =
   "##########\n"
   "#........#\n"
   "#.###....#\n"
@@ -42,7 +42,7 @@ TestObjs *setup() {
 	objs->t_ui = new TextUI();
 	objs->maze1 = readFromString(m1);
 	objs->t_game->setMaze(objs->maze1);
-	std::stringstream ss(m2);
+	std::stringstream ss(m1_maze);
 	objs->OGMaze = ss.str();
 	return objs;
 }
@@ -69,13 +69,19 @@ int main(int argc, char* argv[]) {
 }
 
 void testRender(TestObjs *objs) {
+	//redirect cout to a string stream
 	std::stringstream renderOutput;
 	std::streambuf *coutbuf = std::cout.rdbuf();
 	std::cout.rdbuf(renderOutput.rdbuf());
+	//call render
 	objs->t_ui->render(objs->t_game);
+	//direct cout back to cout
 	std::cout.rdbuf(coutbuf);
-	std::cout << renderOutput.str() << std::endl;
-	std::cout << objs->OGMaze << std::endl;
+
+	//Sanity Checks
+	//std::cout << renderOutput.str() << std::endl;
+	//std::cout << objs->OGMaze << std::endl;
+
 	ASSERT(renderOutput.str() == objs->OGMaze);
 
 }
