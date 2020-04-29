@@ -26,7 +26,8 @@ GAME_SRCS = maze.cpp tile.cpp floor.cpp wall.cpp goal.cpp mysterytile.cpp tilefa
 	uicontrol.cpp chasehero.cpp astarchasehero.cpp inanimate.cpp \
 	mysterycontroller.cpp ecfactory.cpp \
 	ui.cpp \
-	gamerules.cpp basicgamerules.cpp
+	gamerules.cpp basicgamerules.cpp \
+	textui.cpp
 OBJS = $(GAME_SRCS:%.cpp=build/%.o)
 
 # Source files needed only for test programs.
@@ -66,8 +67,11 @@ mazetest : build/mazetest.o build/tctestpp.o $(MAZETEST_OBJS)
 gametest : build/gametest.o build/tctestpp.o build/scriptedcontrol.o $(OBJS)
 	$(CXX) -o $@ build/gametest.o build/tctestpp.o build/scriptedcontrol.o $(OBJS)
 
+test_textui : build/test_textui.o build/tctestpp.o $(OBJS)
+	$(CXX) -o $@ build/test_textui.o build/tctestpp.o $(OBJS)
+
 clean :
-	rm -f minotaur tminotaur positiontest tiletest mazetest gametest
+	rm -f minotaur tminotaur positiontest tiletest mazetest gametest test_textui
 	rm -rf build
 
 # Running the command "make depend" will automatically generate correct

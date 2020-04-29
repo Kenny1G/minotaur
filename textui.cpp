@@ -8,6 +8,7 @@
 #include "goal.h"
 #include "entity.h"
 #include <iostream>
+#include <sstream>
 
 
 
@@ -57,9 +58,8 @@ void TextUI::render(Game *game) {
 		std::cout << std::endl;
 	}
   
-  if (m_msg.empty()) {
+  if (!m_msg.empty()) {
     std::cout << m_msg << ": " <<std::endl;
     m_msg = "";
   }
-
 }

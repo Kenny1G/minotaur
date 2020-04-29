@@ -3,8 +3,10 @@
 #include "position.h"
 #include "tile.h"
 #include "maze.h"
+#include "textui.h"
 #include "entity.h"
 #include "scriptedcontrol.h"
+#include "chasehero.h"
 #include "basicgamerules.h"
 #include "game.h"
 
@@ -24,6 +26,7 @@ const char *m1 =
 
 struct TestObjs {
   Game *game1;
+  Game *game2;
 };
 
 TestObjs *setup() {
@@ -31,6 +34,8 @@ TestObjs *setup() {
   objs->game1 = new Game();
   Maze *maze = readFromString(m1);
   objs->game1->setMaze(maze);
+	TextUI *t_ui = new TextUI();
+	objs->game1->setUI(t_ui);
 
   // Create an Entity with a ScriptedControl as its controller,
   // so we can simulate a series of moves.
@@ -54,16 +59,26 @@ TestObjs *setup() {
 
   objs->game1->setGameRules(new BasicGameRules());
 
+  // game2 is like game1, but no entities are added.
+  // The individual test functions that use it will add entities
+  // (so that various AI control scenarios can be tested.)
+  objs->game2 = new Game();
+  objs->game2->setMaze(readFromString(m1));
+  objs->game2->setGameRules(new BasicGameRules());
+
   return objs;
 }
 
 void cleanup(TestObjs *objs) {
   delete objs->game1;
+  delete objs->game2;
   delete objs;
 }
 
 void testGetEntitiesWithProperty(TestObjs *objs);
 void testTakeTurn(TestObjs *objs);
+void testChaseHero1(TestObjs *objs);
+void testTextUIRender(TestObjs *objs);
 
 int main(int argc, char *argv[]) {
   TEST_INIT();
@@ -75,6 +90,8 @@ int main(int argc, char *argv[]) {
 
   TEST(testGetEntitiesWithProperty);
   TEST(testTakeTurn);
+  TEST(testChaseHero1);
+	TEST(testTextUIRender);
 
   TEST_FINI();
 }
@@ -114,4 +131,92 @@ void testTakeTurn(TestObjs *objs) {
 
   // hero should be at the goal now
   ASSERT(gameRules1->checkGameResult(game1) == GameResult::HERO_WINS);
+}
+
+void testChaseHero1(TestObjs *objs) {
+  Game *game2 = objs->game2;
+
+  // add hero with scripted sequence of moves
+  ScriptedControl *heroController = new ScriptedControl();
+  std::vector<Direction> heroMoves = {
+    Direction::NONE, Direction::DOWN, Direction::UP, Direction::UP
+  };
+  heroController->setInput(heroMoves);
+  Entity *hero = new Entity();
+  hero->setGlyph("@");
+  hero->setProperties("h");
+  hero->setController(heroController);
+  hero->setPosition(Position(1, 3));
+  game2->addEntity(hero);
+
+  // add minotaur controlled by ChaseHero
+  Entity *minotaur = new Entity();
+  minotaur->setGlyph("M");
+  minotaur->setProperties("m");
+  minotaur->setController(new ChaseHero());
+  minotaur->setPosition(Position(3, 3));
+  game2->addEntity(minotaur);
+
+  // hero's first turn does nothing
+  game2->takeTurn(hero);
+  ASSERT(Position(1, 3) == hero->getPosition());
+
+  // minotaur should also not move because there is neither a vertical
+  // nor horizontal move that gets closer to the hero
+  game2->takeTurn(minotaur);
+  ASSERT(Position(3, 3) == minotaur->getPosition());
+
+  // hero's second turn should move down
+  game2->takeTurn(hero);
+  ASSERT(Position(1, 4) == hero->getPosition());
+
+  // minotaur would prefer to move horizontally (left), but can't, so will move
+  // vertically (down)
+  game2->takeTurn(minotaur);
+  ASSERT(Position(3, 4) == minotaur->getPosition());
+
+  // hero's third turn should move up
+  game2->takeTurn(hero);
+  ASSERT(Position(1, 3) == hero->getPosition());
+
+  // minotaur should now move horizontally (left) because it is no longer
+  // blocked in that direction
+  game2->takeTurn(minotaur);
+  ASSERT(Position(2, 4) == minotaur->getPosition());
+
+  // hero moves up again
+  game2->takeTurn(hero);
+  ASSERT(Position(1, 2) == hero->getPosition());
+
+  // minotaur would prefer to move vertically, but can't, so moves horizontally
+  game2->takeTurn(minotaur);
+  ASSERT(Position(1, 4) == minotaur->getPosition());
+}
+
+void testTextUIRender(TestObjs *objs) {
+	//redirect cout to a string stream
+	std::stringstream renderOutput;
+	std::streambuf *coutbuf = std::cout.rdbuf();
+	std::cout.rdbuf(renderOutput.rdbuf());
+	//call render
+	objs->game1->getUI()->render(objs->game1);
+	//direct cout back to cout
+	std::cout.rdbuf(coutbuf);
+
+	//Sanity Checks
+	//std::cout << renderOutput.str() << std::endl;
+	//std::cout << objs->OGMaze << std::endl;
+
+	std::string expected_maze = 
+	"##########\n"
+  "#........#\n"
+  "#.###....#\n"
+  "#.#......#\n"
+  "#.....<..#\n"
+  "##########\n";
+
+	ASSERT(renderOutput.str() == expected_maze);
+
+	//Todo: add tests for a maze with an entity in it
+
 }
