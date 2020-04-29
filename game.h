@@ -20,6 +20,10 @@ public:
 
 private:
   // TODO: add fields
+	Maze* m_maze;
+	UI* m_ui;
+	GameRules* m_gameRules;
+	EntityVec *m_entities;
 
   // disallow copy constructor and assignment operator
   Game(const Game &);
@@ -56,7 +60,7 @@ public:
   // Get a vector of pointers to Entity objects that have the
   // specified property. The vector could be empty if no Entity objects
   // have the specified property.
-  std::vector<Entity *> getEntitiesWithProperty(char prop) const;
+  EntityVec getEntitiesWithProperty(char prop) const;
 
   // Get the Maze object.
   Maze *getMaze();

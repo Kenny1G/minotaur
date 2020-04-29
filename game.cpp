@@ -1,26 +1,12 @@
 #include "game.h"
 #include "entity.h"
 
-Game::Game() {}
+Game::Game():
+m_maze(0),
+m_ui(0),
+m_gameRules(0)
+{}
 Game::~Game() {}
-
-// Set the Maze object. The Game object assumes responsibility for
-// deleting it.
-void Game::setMaze(Maze *maze) {
-
-}
-
-// Set the UI object. The Game object assumes responsibility for
-// deleting it.
-void Game::setUI(UI *ui) {
-
-}
-
-// Set the GameRules object. The Game object assumes responsibility for
-// deleting it.
-void Game::setGameRules(GameRules *gameRules) {
-
-}
 
 // Add an Entity to the sequence of entities. The Game object assumes
 // responsibility for deleting it.
@@ -30,35 +16,20 @@ void Game::addEntity(Entity *entity) {
 
 // Get the Entity at the specified Position.  Return nullptr if
 // there is no Entity at the specified Position.
-Entity Game::*getEntityAt(const Position &pos) {
-
+Entity* Game::getEntityAt(const Position &pos) {
+	return new Entity();
 }
 
 // Get a const reference to the Game object's internal vector
 // of pointers to Entity objects.
-const EntityVec Game::&getEntities() const {
+const Game::EntityVec& Game::getEntities() const {
 
 }
 
 // Get a vector of pointers to Entity objects that have the
 // specified property. The vector could be empty if no Entity objects
 // have the specified property.
-std::vector<Entity *> Game::getEntitiesWithProperty(char prop) const {
-
-}
-
-// Get the Maze object.
-Maze Game::*getMaze() {
-
-}
-
-// Get the UI object.
-UI Game::*getUI() {
-
-}
-
-// Get the GameRules object.
-GameRules Game::*getGameRules() {
+Game::EntityVec Game::getEntitiesWithProperty(char prop) const {
 
 }
 
@@ -83,5 +54,38 @@ void Game::takeTurn(Entity *actor) {
 // the resulting Game object.
 static Game Game::*loadGame(std::istream &in) {
 
+}
+
+
+// Set the Maze object. The Game object assumes responsibility for
+// deleting it.
+void Game::setMaze(Maze *maze) {
+	m_maze = maze;
+}
+
+// Set the UI object. The Game object assumes responsibility for
+// deleting it.
+void Game::setUI(UI *ui) {
+	m_ui = ui;
+}
+
+// Set the GameRules object. The Game object assumes responsibility for
+// deleting it.
+void Game::setGameRules(GameRules *gameRules) {
+	m_gameRules = gameRules;
+}
+// Get the Maze object.
+Maze* Game::getMaze() {
+	return m_maze;
+}
+
+// Get the UI object.
+UI* Game::getUI() {
+	return m_ui;
+}
+
+// Get the GameRules object.
+GameRules* Game::getGameRules() {
+	return m_gameRules;
 }
 

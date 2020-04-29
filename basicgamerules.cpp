@@ -38,7 +38,7 @@ bool BasicGameRules::allowMove(Game *game, Entity *actor, const Position &source
 void BasicGameRules::enactMove(Game *game, Entity *actor, const Position &dest) const {
 
   //carries out move if the move's approved
-  if(BasicGameRules::allowmove) {
+  if(BasicGameRules::allowMove()) {
     actor.setPosition(dest);
   }
   //if theres an inanimate object
