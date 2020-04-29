@@ -1,29 +1,35 @@
 #include "game.h"
 #include "entity.h"
+#include "maze.h"
+#include <vector>
+#include <iostream>
 
 Game::Game():
 m_maze(0),
 m_ui(0),
-m_gameRules(0)
+m_gameRules(0),
+m_entities(new EntityVec)
 {}
-Game::~Game() {}
+Game::~Game() {
+	for (EntityVec::iterator it = m_entities->begin(); it != m_entities->end(); ++it) {
+		delete *it;
+	}
+	delete m_maze;
+	delete m_ui;
+	delete m_gameRules;
+	delete m_entities;
+}
 
 // Add an Entity to the sequence of entities. The Game object assumes
 // responsibility for deleting it.
 void Game::addEntity(Entity *entity) {
-
+	m_entities->push_back(entity);
 }
 
 // Get the Entity at the specified Position.  Return nullptr if
 // there is no Entity at the specified Position.
 Entity* Game::getEntityAt(const Position &pos) {
 	return nullptr;
-}
-
-// Get a const reference to the Game object's internal vector
-// of pointers to Entity objects.
-const Game::EntityVec& Game::getEntities() const {
-
 }
 
 // Get a vector of pointers to Entity objects that have the
@@ -52,10 +58,35 @@ void Game::takeTurn(Entity *actor) {
 
 // Read initial Game data from the specified istream, and return
 // the resulting Game object.
-static Game Game::*loadGame(std::istream &in) {
+Game *Game::loadGame(std::istream &in) {
+	//valorant is the name of our game :)
+	Game *valorant = new Game();
+	valorant->setMaze(Maze::read(in));
 
+	int x,y;
+	std::string properties;
+	while(!in.eof()) {
+		Entity *ent = new Entity();
+		in >> properties;
+		ent->setProperties(properties);
+		
+		in >> x >> y;
+		Position *pos = new Position(x,y);
+		ent->setPosition(*pos);
+
+		valorant->m_entities->push_back(ent);
+	}
+return valorant;
 }
 
+
+/*Setters and Getters*/
+
+// Get a const reference to the Game object's internal vector
+// of pointers to Entity objects.
+const Game::EntityVec& Game::getEntities() const {
+	return *m_entities;
+}
 
 // Set the Maze object. The Game object assumes responsibility for
 // deleting it.
