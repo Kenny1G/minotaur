@@ -11,8 +11,10 @@ Inanimate::~Inanimate() {
 }
 
 Direction Inanimate::getMoveDirection(Game *game, Entity *entity) {
+  return Direction::NONE;
 }
 
 
 bool Inanimate::isUser() const {
+  return false;
 }
