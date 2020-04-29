@@ -17,7 +17,7 @@ void Game::addEntity(Entity *entity) {
 // Get the Entity at the specified Position.  Return nullptr if
 // there is no Entity at the specified Position.
 Entity* Game::getEntityAt(const Position &pos) {
-	return new Entity();
+	return nullptr;
 }
 
 // Get a const reference to the Game object's internal vector
