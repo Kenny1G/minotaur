@@ -18,6 +18,8 @@ public:
 
 private:
   // Add your own private member functions...
+  bool canMove(Entity *min, Position source, Position dest);
+
 };
 
 #endif // CHASEHERO_H

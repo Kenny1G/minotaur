@@ -17,7 +17,8 @@ class Game {
 public:
   // Typedef to refer to a vector of pointers to Entity objects
   typedef std::vector<Entity *> EntityVec;
-
+  typedef std::vector<Entity *> ::iterator EntityVec::iterator;
+  
 private:
   // TODO: add fields
 	Maze* m_maze;
