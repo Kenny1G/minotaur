@@ -32,13 +32,13 @@ bool BasicGameRules::allowMove(Game *game, Entity *actor, const Position &source
     //if theres something that has property v(moveable) and that the tile adjacent to the tile in the same direction
     else if(en != nullptr ) {
       if(en->hasProperty('v')) {
-	Position new_dest = dest;
-	new_dest.displace(game->getUI()->getMoveDirection());
-	return allowMove(game, actor, dest, new_dest);
+				Position new_dest = dest;
+				new_dest.displace(game->getUI()->getMoveDirection());
+				return allowMove(game, actor, dest, new_dest);
       }
-    }
-    else if(en->hasProperty('m')) {
-      move = true;
+			else if(en->hasProperty('m')) {
+				move = true;
+			}
     }
   }
   return move;
@@ -51,7 +51,7 @@ void BasicGameRules::enactMove(Game *game, Entity *actor, const Position &dest) 
     Position new_dest	= dest;
     new_dest.displace(game->getUI()->getMoveDirection());
     if(game->getEntityAt(new_dest) != nullptr) {
-      BasicGameRules::enactMove(game, actor, new_dest); 
+      game->getGameRules()->enactMove(game, actor, new_dest); 
     }
     else {
       en->setPosition(new_dest);

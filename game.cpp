@@ -1,6 +1,9 @@
 #include "game.h"
 #include "entity.h"
 #include "maze.h"
+#include "ui.h"
+#include "gamerules.h"
+#include "entitycontroller.h"
 #include <vector>
 #include <iostream>
 
@@ -36,7 +39,14 @@ Entity* Game::getEntityAt(const Position &pos) {
 // specified property. The vector could be empty if no Entity objects
 // have the specified property.
 Game::EntityVec Game::getEntitiesWithProperty(char prop) const {
+	EntityVec *ev = new EntityVec;
+	for(EntityVec::iterator it = m_entities->begin(); it != m_entities->end(); ++it) {
+		if((*it)->hasProperty(prop)) {
+			ev->push_back(*it);
+		}
+	}
 
+	return *ev;
 }
 
 // Let the Entity objects take turns in round-robin fashion until
@@ -53,7 +63,44 @@ void Game::gameLoop() {
 // unit tests.  It is mainly intended to be called from
 // the gameLoop member function.
 void Game::takeTurn(Entity *actor) {
+	EntityController *fromWhomstIKnow = actor->getController();
+	if(fromWhomstIKnow->isUser())
+	{
+		//m_ui->render(this);
+	}
+	Direction toWherestDoIGo;
+		toWherestDoIGo = fromWhomstIKnow->getMoveDirection(this, actor);
+	Position fromWherestDoICome = actor->getPosition();
+	int x = fromWherestDoICome.getX();
+	int y = fromWherestDoICome.getY();
 
+	switch (toWherestDoIGo) {
+		case Direction::DOWN:
+			y++;
+			break;
+		case Direction::UP:
+			y--;
+			break;
+		case Direction::LEFT:
+			x--;
+			break;
+		case Direction::RIGHT:
+			x++;
+			break;
+		default:
+		break;
+	}
+
+	Position *wherestILand = new Position(x,y);
+
+	if (m_gameRules->allowMove(this, actor, fromWherestDoICome, *wherestILand)) {
+		m_gameRules->enactMove(this, actor, *wherestILand);
+	}
+	else {
+		if (fromWhomstIKnow->isUser()) {
+			m_ui->displayMessage("Illegal Move",false);
+		}
+	}
 }
 
 // Read initial Game data from the specified istream, and return
