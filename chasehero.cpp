@@ -24,12 +24,12 @@ Direction ChaseHero::getMoveDirection(Game *game, Entity *entity) {
   //find heros
   Game::EntityVec h_vec = game ->getEntitiesWithProperty('h');
   Entity *hero;
-
+  
   //get positon of minotaur
   Position mp = entity->getPosition();
   int x_m = mp.Position::getX();
   int y_m = mp.Position::getY();
-
+  
   //find which is the closest hero
   int dist = hm.Position::distanceFrom(h_vec[0]);
   hero = h_vec[0];
@@ -40,26 +40,26 @@ Direction ChaseHero::getMoveDirection(Game *game, Entity *entity) {
       hero = h_vec[i];
     }
   }
-   
-    
+  
+  
   //position of hero
   Position hp = hero->getPosition();
   int x_h = hp.Position::getX();
   int y_h = hp.Position::getY();
-
-
+  
+  
   //Get distance from minitaur to hero
   int x_dif = x_h - x_m;
   int x_dif_abs = x_dif
-  if(x_dif < 0) {
-		 x_dif_abs = -x_dif_abs;
-  }
+    if(x_dif < 0) {
+		   x_dif_abs = -x_dif_abs;
+    }
   int y_dif = x_h - x_m;
   int y_dif_abs = y_dif;
   if (y_dif < 0) {
     y_dif_abs = -y_dif_abs;
   }
-
+  
   //dertemine direction
   if (x_dif_abs < y_dif_abs){
     if (x_dif < 0) {
