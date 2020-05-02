@@ -67,11 +67,8 @@ mazetest : build/mazetest.o build/tctestpp.o $(MAZETEST_OBJS)
 gametest : build/gametest.o build/tctestpp.o build/scriptedcontrol.o $(OBJS)
 	$(CXX) -o $@ build/gametest.o build/tctestpp.o build/scriptedcontrol.o $(OBJS)
 
-test_textui : build/test_textui.o build/tctestpp.o $(OBJS)
-	$(CXX) -o $@ build/test_textui.o build/tctestpp.o $(OBJS)
-
 clean :
-	rm -f minotaur tminotaur positiontest tiletest mazetest gametest test_textui
+	rm -f minotaur tminotaur positiontest tiletest mazetest gametest 
 	rm -rf build
 
 # Running the command "make depend" will automatically generate correct

@@ -4,6 +4,8 @@
 #include "ui.h"
 #include "gamerules.h"
 #include "entitycontroller.h"
+#include "uicontrol.h"
+#include "chasehero.h"
 #include <vector>
 #include <iostream>
 
@@ -32,8 +34,13 @@ void Game::addEntity(Entity *entity) {
 // Get the Entity at the specified Position.  Return nullptr if
 // there is no Entity at the specified Position.
 Entity* Game::getEntityAt(const Position &pos) {
-	return nullptr;
-}
+		for (EntityVec::iterator it = m_entities->begin(); it != m_entities->end(); ++it) {
+			if ((*it)->getPosition() == pos) {
+				return *it;
+			}
+		}
+		return nullptr;
+	}
 
 // Get a vector of pointers to Entity objects that have the
 // specified property. The vector could be empty if no Entity objects
@@ -63,13 +70,12 @@ void Game::gameLoop() {
 // unit tests.  It is mainly intended to be called from
 // the gameLoop member function.
 void Game::takeTurn(Entity *actor) {
-	EntityController *fromWhomstIKnow = actor->getController();
-	if(fromWhomstIKnow->isUser())
+	EntityController *controller = actor->getController();
+	if(controller->isUser())
 	{
 		//m_ui->render(this);
 	}
-	Direction toWherestDoIGo;
-		toWherestDoIGo = fromWhomstIKnow->getMoveDirection(this, actor);
+	Direction toWherestDoIGo = controller->getMoveDirection(this, actor);
 	Position fromWherestDoICome = actor->getPosition();
 	int x = fromWherestDoICome.getX();
 	int y = fromWherestDoICome.getY();
@@ -97,7 +103,7 @@ void Game::takeTurn(Entity *actor) {
 		m_gameRules->enactMove(this, actor, *wherestILand);
 	}
 	else {
-		if (fromWhomstIKnow->isUser()) {
+		if (controller->isUser()) {
 			m_ui->displayMessage("Illegal Move",false);
 		}
 	}
@@ -115,8 +121,20 @@ Game *Game::loadGame(std::istream &in) {
 	while(!in.eof()) {
 		Entity *ent = new Entity();
 		in >> properties;
-		ent->setProperties(properties);
-		
+		if (properties.length() != 3) {
+			return nullptr;
+		}
+		ent->setGlyph(properties.substr(0,1));
+		switch (properties.at(1)) {
+			case 'u':
+				ent->setController(new UIControl());
+				break;
+			case 'c':
+				ent->setController(new ChaseHero());
+				break;
+		}
+		ent->setProperties(properties.substr(2));
+
 		in >> x >> y;
 		Position *pos = new Position(x,y);
 		ent->setPosition(*pos);

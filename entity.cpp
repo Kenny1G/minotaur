@@ -5,9 +5,16 @@
 
 #include "entity.h"
 #include "entitycontroller.h"
+#include "uicontrol.h"
+#include "chasehero.h"
 
 
-Entity::Entity() {}
+Entity::Entity():
+m_pos(new Position),
+m_glyph(""),
+m_properties("")
+
+ {}
 
 Entity::~Entity() {}
 
@@ -57,10 +64,10 @@ EntityController* Entity::getController() {
 
 // Set this Entity's Position.
 void Entity::setPosition(const Position &pos) {
-  m_pos = pos;
+  *m_pos = pos;
 }
 
 // Return this Entity's Position.
 Position Entity::getPosition() const {
-  return m_pos;
+  return *m_pos;
 }

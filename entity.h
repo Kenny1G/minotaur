@@ -11,7 +11,7 @@ class EntityController;
 class Entity {
 private:
   // TODO: add fields
-  Position m_pos;
+  Position *m_pos;
   std::string m_glyph;
   std:: string m_properties;
   EntityController *m_controller;
