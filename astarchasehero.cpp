@@ -14,6 +14,7 @@ AStarChaseHero::AStarChaseHero() {
 AStarChaseHero::~AStarChaseHero() {
 }
 
+
 Direction AStarChaseHero::getMoveDirection(Game *game, Entity *entity) {
   //make direction                                                                                  
   Direction direction = Direction::NONE;
@@ -49,4 +50,14 @@ Direction AStarChaseHero::getMoveDirection(Game *game, Entity *entity) {
 
 bool AStarChaseHero::isUser() const {
   return false;
+
+//getMoveDirection stub implementation given by instructions
+Direction AStarChaseHero::getMoveDirection(Game*, Entity*) {
+  assert(false);
+  return Direction::NONE;
+}
+
+bool AStarChaseHero::isUser() const {
+	return false;
+
 }

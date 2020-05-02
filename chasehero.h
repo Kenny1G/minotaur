@@ -18,7 +18,7 @@ public:
 
 private:
   // Add your own private member functions...
-  bool canMove(Entity *min, Position source, Position dest);
+  bool canMove(Game *game, Entity *min, const Position source, const Position dest);
 
 };
 

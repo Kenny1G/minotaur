@@ -10,7 +10,7 @@ UIControl::UIControl() {
 UIControl::~UIControl() {
 }
 
-Direction UIControl::getMoveDirection(Game *game, Entity *entity) {
+Direction UIControl::getMoveDirection(Game *game, Entity*) {
 	return game->getUI()->getMoveDirection();
 }
 bool UIControl::isUser() const {

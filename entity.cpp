@@ -5,9 +5,16 @@
 
 #include "entity.h"
 #include "entitycontroller.h"
+#include "uicontrol.h"
+#include "chasehero.h"
 
 
-Entity::Entity() {}
+Entity::Entity():
+m_pos(new Position),
+m_glyph(""),
+m_properties("")
+
+ {}
 
 Entity::~Entity() {}
 
@@ -36,11 +43,12 @@ std::string Entity::getProperties() const {
 // Return true if the Entity's properties contain the specified
 // character, false otherwise.
 bool Entity::hasProperty(char prop) const {
-  bool result = false; 
-  if (m_properties == prop){
-    result = true;
-  }
-  return result;
+	for (unsigned int i = 0; i < m_properties.length(); ++i) {
+		if (prop == m_properties.at(i)) {
+			return true;
+		}
+	}
+  return false;
 }
 
 // Set this Entity's EntityController, which will determine how it moves.
@@ -50,16 +58,16 @@ void Entity::setController(EntityController *controller) {
 }
 
 // Get this Entity's EntityController.
-EntityController Entity::*getController() {
+EntityController* Entity::getController() {
   return m_controller;
 }
 
 // Set this Entity's Position.
 void Entity::setPosition(const Position &pos) {
-  m_pos = pos;
+  *m_pos = pos;
 }
 
 // Return this Entity's Position.
 Position Entity::getPosition() const {
-  return m_pos;
+  return *m_pos;
 }

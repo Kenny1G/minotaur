@@ -10,7 +10,7 @@ Inanimate::Inanimate() {
 Inanimate::~Inanimate() {
 }
 
-Direction Inanimate::getMoveDirection(Game *game, Entity *entity) {
+Direction Inanimate::getMoveDirection(Game*, Entity*) {
   return Direction::NONE;
 }
 
