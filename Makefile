@@ -11,7 +11,7 @@ CXX = g++
 CXXFLAGS = -g -Wall -Wextra -pedantic -std=c++11
 
 # Source files needed only for the driver program
-MAIN_SRCS = main.cpp textui.cpp
+MAIN_SRCS = main.cpp 
 MAIN_OBJS = $(MAIN_SRCS:%.cpp=build/%.o)
 
 # Source files needed only for the curses driver program

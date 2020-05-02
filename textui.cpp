@@ -11,7 +11,6 @@
 #include <sstream>
 
 
-
 TextUI::TextUI():
 m_msg("")
 {}
@@ -19,11 +18,11 @@ m_msg("")
 TextUI::~TextUI() {}
 
 Direction TextUI::getMoveDirection() {
-  char input_token;
+  std::string input_token;
   std::cout << "Your move (u/d/l/r): ";
   std::cin >> input_token;
 
-  switch (input_token) 
+  switch (input_token.at(0)) 
   {
     case ('u'): return Direction::UP;
     case ('d'): return Direction::DOWN;

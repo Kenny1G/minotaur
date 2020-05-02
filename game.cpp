@@ -10,9 +10,9 @@
 #include <iostream>
 
 Game::Game():
-m_maze(0),
-m_ui(0),
-m_gameRules(0),
+m_maze(nullptr),
+m_ui(nullptr),
+m_gameRules(nullptr),
 m_entities(new EntityVec)
 {}
 Game::~Game() {
@@ -34,13 +34,14 @@ void Game::addEntity(Entity *entity) {
 // Get the Entity at the specified Position.  Return nullptr if
 // there is no Entity at the specified Position.
 Entity* Game::getEntityAt(const Position &pos) {
+	Entity *entity = nullptr;
 		for (EntityVec::iterator it = m_entities->begin(); it != m_entities->end(); ++it) {
 			if ((*it)->getPosition() == pos) {
-				return *it;
+				entity = *it;
 			}
 		}
-		return nullptr;
-	}
+		return entity;
+}
 
 // Get a vector of pointers to Entity objects that have the
 // specified property. The vector could be empty if no Entity objects
@@ -62,6 +63,23 @@ Game::EntityVec Game::getEntitiesWithProperty(char prop) const {
 // an Entity whose EntityController is controlled by the user takes
 // a turn.
 void Game::gameLoop() {
+	GameResult result = m_gameRules->checkGameResult(this);
+	while (result == GameResult::UNKNOWN) {
+		for (EntityVec::iterator it = m_entities->begin(); it != m_entities->end(); ++it) {
+			if ((*it)->getController()->isUser()) {
+				m_ui->render(this);
+			}
+			takeTurn(*it);
+			result = m_gameRules->checkGameResult(this);
+		}
+	}
+	if (result == GameResult::HERO_LOSES) {
+		m_ui->displayMessage("DEFEAT");
+	} 
+	else {
+		m_ui->displayMessage("VICTORY");
+	}
+	m_ui->render(this);
 
 }
 
@@ -98,7 +116,6 @@ void Game::takeTurn(Entity *actor) {
 	}
 
 	Position *wherestILand = new Position(x,y);
-
 	if (m_gameRules->allowMove(this, actor, fromWherestDoICome, *wherestILand)) {
 		m_gameRules->enactMove(this, actor, *wherestILand);
 	}
