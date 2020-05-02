@@ -15,11 +15,11 @@ AStarChaseHero::~AStarChaseHero() {
 }
 
 //getMoveDirection stub implementation given by instructions
-Direction AStarChaseHero::getMoveDirection(Game *game, Entity *entity) {
+Direction AStarChaseHero::getMoveDirection(Game*, Entity*) {
   assert(false);
   return Direction::NONE;
 }
 
 bool AStarChaseHero::isUser() const {
-
+	return false;
 }
