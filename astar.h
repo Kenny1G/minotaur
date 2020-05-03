@@ -10,6 +10,19 @@
 class AStar {
 private:
   Maze m_maze;
+  Position m_start;
+  Goal m_goal;
+  AStar(const Astar &);
+  AStar &operator=(const Astar &);
+public:
+  AStar();
+  virtual ~AStar();
+
+  virtual std::vector<Position> search();
+
+private:
+  virtual int h(Position source, Position goal);
+  
   
 
 #endif //ASTAR_H
