@@ -17,13 +17,14 @@ private:
 public:
   AStar();
   virtual ~AStar();
-
-  virtual std::vector<Position> search();
+  
+  virtual std::map<Position, Position> search();
 
 private:
   virtual int h(Position source, Position goal);
-  
-  
+  virtual std::vector<Position> checkNeighbors(Position source);
 
-#endif //ASTAR_H
 }
+  
+#endif //ASTAR_H
+
