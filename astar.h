@@ -11,18 +11,18 @@ class AStar {
 private:
   Maze m_maze;
   Position m_start;
-  Goal m_goal;
+  Position m_goal;
   AStar(const Astar &);
   AStar &operator=(const Astar &);
 public:
   AStar();
-  virtual ~AStar();
+  ~AStar();
   
-  virtual std::map<Position, Position> search();
+  std::map<Position, Position> search();
 
 private:
-  virtual int h(Position source, Position goal);
-  virtual std::vector<Position> checkNeighbors(Position source);
+  int h(Position source, Position goal);
+  std::vector<Position> checkNeighbors(Position source);
 
 }
   
