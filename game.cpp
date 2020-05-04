@@ -6,6 +6,7 @@
 #include "entitycontroller.h"
 #include "uicontrol.h"
 #include "chasehero.h"
+#include "astarchasehero.h"
 #include <vector>
 #include <iostream>
 
@@ -47,14 +48,13 @@ Entity* Game::getEntityAt(const Position &pos) {
 // specified property. The vector could be empty if no Entity objects
 // have the specified property.
 Game::EntityVec Game::getEntitiesWithProperty(char prop) const {
-	EntityVec *ev = new EntityVec;
+	EntityVec ev;
 	for(EntityVec::iterator it = m_entities->begin(); it != m_entities->end(); ++it) {
 		if((*it)->hasProperty(prop)) {
-			ev->push_back(*it);
+			ev.push_back(*it);
 		}
 	}
-
-	return *ev;
+	return ev;
 }
 
 // Let the Entity objects take turns in round-robin fashion until
@@ -124,6 +124,7 @@ void Game::takeTurn(Entity *actor) {
 			m_ui->displayMessage("Illegal Move",false);
 		}
 	}
+	delete wherestILand;
 }
 
 // Read initial Game data from the specified istream, and return
@@ -139,6 +140,7 @@ Game *Game::loadGame(std::istream &in) {
 		Entity *ent = new Entity();
 		in >> properties;
 		if (properties.length() != 3) {
+			delete ent;
 			return nullptr;
 		}
 		ent->setGlyph(properties.substr(0,1));
@@ -149,12 +151,15 @@ Game *Game::loadGame(std::istream &in) {
 			case 'c':
 				ent->setController(new ChaseHero());
 				break;
+			case 'a':
+				ent->setController(new AStarChaseHero());
+				break;
 		}
 		ent->setProperties(properties.substr(2));
 
 		in >> x >> y;
-		Position *pos = new Position(x,y);
-		ent->setPosition(*pos);
+		Position pos = Position(x,y);
+		ent->setPosition(pos);
 
 		valorant->m_entities->push_back(ent);
 	}

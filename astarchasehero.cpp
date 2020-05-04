@@ -7,6 +7,9 @@
 #include "game.h"
 #include "entity.h"
 #include "position.h"
+#include "astar.h"
+#include <map>
+#include <bits/stdc++.h>
 
 AStarChaseHero::AStarChaseHero() {
 }
@@ -18,46 +21,71 @@ AStarChaseHero::~AStarChaseHero() {
 Direction AStarChaseHero::getMoveDirection(Game *game, Entity *entity) {
   //make direction                                                                                  
   Direction direction = Direction::NONE;
-
-  //find heros                                                                                      
+  
+  //find heros
   Game::EntityVec h_vec = game ->getEntitiesWithProperty('h');
-  Entity *hero;
-
-  //get positon of minotaur                                                                         
+  
+  //get positon of minotaur
   Position mp = entity->getPosition();
-  int x_m = mp.Position::getX();
-  int y_m = mp.Position::getY();
+	int x_m = mp.getX();
+  int y_m = mp.getY();
 
-  //find which is the closest hero                                                                  
-  int dist = hm.Position::distanceFrom(h_vec[0]);
+  Entity *hero;
   hero = h_vec[0];
-  for (EntityVec::iterator i = h_vec.begin() + 1; i != h_vec.end(); i++) {
-    int new_dist = hm.Position::distanceFrom(h_vec[i]);
+	 //find which is the closest hero
+  int dist = mp.distanceFrom(h_vec[0]->getPosition());
+  for (Game::EViterator i = h_vec.begin() + 1; i != h_vec.end(); i++) {
+    int new_dist = mp.distanceFrom((*i)->getPosition());
     if (new_dist < dist) {
       dist = new_dist;
-      hero = h_vec[i];
+      hero = *i;
     }
   }
 
   //position of hero                                                                                
   Position hp = hero->getPosition();
-  int x_h = hp.Position::getX();
-  int y_h = hp.Position::getY();
+	
+	AStar *pathCreator = new AStar(game->getMaze(), &mp, &hp);
+	std::map<Position, Position> pathMap = pathCreator->search();
+	std::vector<Position> reversePath;
+	Position wanted = hp;
+	for(std::map<Position, Position>::iterator it = pathMap.begin(); it != pathMap.end(); ++it) {
+		if (it->first == wanted) {
+			reversePath.push_back(it->first);
+			wanted = it->second;
+			std::cout << wanted << std::endl;
+			std::cout << it->first << " " << it->second << std::endl;
+			if (wanted == mp) break;
+		}
+	}
+	std::reverse(reversePath.begin(), reversePath.end());
 
-  
+	//int x_new = reversePath.at(1).getX();
+	//int y_new = reversePath.at(1).getY();
+
+	//int y_diff = y_new - y_m;
+	//int x_diff = x_new - x_m;
+
+	//if (y_new == y_m) {
+		//if (x_diff < 0) {	
+			//direction = Direction::LEFT;			
+		//}
+		//else if(x_diff > 0) {
+			//direction = Direction::RIGHT;		
+		//}
+	//}
+	//else if(x_new == x_m) {
+		//if(y_diff < 0) {
+			//direction = Direction::UP;
+		//}
+		//else if(y_diff > 0) {
+			//direction = Direction::DOWN;
+		//}
+	//}
+
   return direction;
 }
 
 bool AStarChaseHero::isUser() const {
   return false;
-
-//getMoveDirection stub implementation given by instructions
-Direction AStarChaseHero::getMoveDirection(Game*, Entity*) {
-  assert(false);
-  return Direction::NONE;
-}
-
-bool AStarChaseHero::isUser() const {
-	return false;
-
 }

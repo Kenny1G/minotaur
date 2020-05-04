@@ -14,6 +14,7 @@ Maze::~Maze(){
 	for (TileVec::iterator it = m_tiles->begin(); it != m_tiles->end(); ++it) {
 		delete *it;
 	}
+	delete m_tiles;
 }
 
 // Get the width of the Maze
@@ -66,15 +67,21 @@ Maze *Maze::read(std::istream &in) {
 			in.get(tile_char);
 			if  (tile_char != '\n') {
 				tile_ptr = tf->createFromChar(tile_char);
-				if (tile_ptr == nullptr) return nullptr; 
+				if (tile_ptr == nullptr) {
+					delete mz;
+					return nullptr; 
+				}
 				const Position *tPos = new Position(c,r);
 				mz->m_tiles->at(mz->posToIndex(*tPos)) = tile_ptr; 
+				delete tPos;
 			}
 		}
 		in.get(tile_char);
-		if (tile_char != '\n')  return nullptr;
+		if (tile_char != '\n') {
+			delete mz;
+		  return nullptr;
+		}
 	}	
-	
 	return mz;
 }
 

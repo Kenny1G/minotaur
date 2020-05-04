@@ -5,26 +5,29 @@
 #ifndef ASTAR_H
 #define ASTAR_H
 
-#include 
+#include <map>
+#include <vector>
 
+class Maze;
+class Position;
 class AStar {
 private:
-  Maze m_maze;
-  Position m_start;
-  Position m_goal;
-  AStar(const Astar &);
-  AStar &operator=(const Astar &);
+  Maze *m_maze;
+  Position *m_start;
+  Position *m_goal;
+  AStar(const AStar &);
+  AStar &operator=(const AStar &);
 public:
-  AStar();
+  AStar(Maze*, Position*, Position*);
   ~AStar();
   
   std::map<Position, Position> search();
 
 private:
-  int h(Position source, Position goal);
+  int h(Position);
   std::vector<Position> checkNeighbors(Position source);
 
-}
+};
   
 #endif //ASTAR_H
 

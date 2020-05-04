@@ -27,7 +27,8 @@ GAME_SRCS = maze.cpp tile.cpp floor.cpp wall.cpp goal.cpp mysterytile.cpp tilefa
 	mysterycontroller.cpp ecfactory.cpp \
 	ui.cpp \
 	gamerules.cpp basicgamerules.cpp \
-	textui.cpp
+	textui.cpp \
+	astar.cpp
 OBJS = $(GAME_SRCS:%.cpp=build/%.o)
 
 # Source files needed only for test programs.

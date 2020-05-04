@@ -70,7 +70,7 @@ Direction ChaseHero::getMoveDirection(Game *game, Entity *entity) {
     if (x_dif < 0) {
       direction = Direction::LEFT;
     }
-    else {
+    else if (x_dif > 0){
       direction = Direction::RIGHT;
     }
   }
@@ -78,7 +78,7 @@ Direction ChaseHero::getMoveDirection(Game *game, Entity *entity) {
         if (y_dif < 0) {
       direction = Direction::UP;
     }
-    else {
+    else if (y_dif > 0){
       direction = Direction::DOWN;
     }
   }

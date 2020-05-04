@@ -12,11 +12,14 @@
 Entity::Entity():
 m_pos(new Position),
 m_glyph(""),
-m_properties("")
-
+m_properties(""),
+m_controller(nullptr)
  {}
 
-Entity::~Entity() {}
+Entity::~Entity() {
+	if (m_controller) delete m_controller;
+	delete m_pos;
+}
 
 // Set the glyph that will represent this Entity.
 // Should consist of a single character.
