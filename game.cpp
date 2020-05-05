@@ -7,14 +7,17 @@
 #include "uicontrol.h"
 #include "chasehero.h"
 #include "astarchasehero.h"
+#include "inanimate.h"
 #include <vector>
 #include <iostream>
+#include <sstream>
 
 Game::Game():
 m_maze(nullptr),
 m_ui(nullptr),
 m_gameRules(nullptr),
-m_entities(new EntityVec)
+m_entities(new EntityVec),
+m_lastMove(Direction::NONE)
 {}
 Game::~Game() {
 	for (EntityVec::iterator it = m_entities->begin(); it != m_entities->end(); ++it) {
@@ -71,6 +74,9 @@ void Game::gameLoop() {
 			}
 			takeTurn(*it);
 			result = m_gameRules->checkGameResult(this);
+			if(result != GameResult::UNKNOWN) {
+				break;
+			}
 		}
 	}
 	if (result == GameResult::HERO_LOSES) {
@@ -89,11 +95,11 @@ void Game::gameLoop() {
 // the gameLoop member function.
 void Game::takeTurn(Entity *actor) {
 	EntityController *controller = actor->getController();
-	if(controller->isUser())
-	{
-		//m_ui->render(this);
-	}
+
 	Direction toWherestDoIGo = controller->getMoveDirection(this, actor);
+	if(!actor->hasProperty('v')) {
+		m_lastMove = toWherestDoIGo;
+	}
 	Position fromWherestDoICome = actor->getPosition();
 	int x = fromWherestDoICome.getX();
 	int y = fromWherestDoICome.getY();
@@ -112,7 +118,8 @@ void Game::takeTurn(Entity *actor) {
 			x++;
 			break;
 		default:
-		break;
+			return;
+			break;
 	}
 
 	Position *wherestILand = new Position(x,y);
@@ -135,10 +142,14 @@ Game *Game::loadGame(std::istream &in) {
 	valorant->setMaze(Maze::read(in));
 
 	int x,y;
-	std::string properties;
-	while(!in.eof()) {
+	std::string entire;
+	getline(in, entire);
+	std::stringstream str(entire);
+	unsigned int index = 0;
+	while(index < entire.length()) {
 		Entity *ent = new Entity();
-		in >> properties;
+		std::string properties;
+		str >> properties;
 		if (properties.length() != 3) {
 			delete ent;
 			return nullptr;
@@ -154,14 +165,22 @@ Game *Game::loadGame(std::istream &in) {
 			case 'a':
 				ent->setController(new AStarChaseHero());
 				break;
+			case 'i':
+				ent->setController(new Inanimate());
+				break;
+			default:
+				return nullptr;
 		}
 		ent->setProperties(properties.substr(2));
-
-		in >> x >> y;
+		index += 4;
+		str >> x >> y;
 		Position pos = Position(x,y);
-		ent->setPosition(pos);
+		int sizeofX = std::to_string(x).length();
+		int sizeofY = std::to_string(y).length();
 
-		valorant->m_entities->push_back(ent);
+		index += sizeofX + sizeofY + 2;
+		ent->setPosition(pos);
+		valorant->addEntity(ent);
 	}
 return valorant;
 }

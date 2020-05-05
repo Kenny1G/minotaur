@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "position.h"
 
 class Maze;
 class UI;
@@ -18,6 +19,7 @@ public:
   // Typedef to refer to a vector of pointers to Entity objects
   typedef std::vector<Entity *> EntityVec;
   typedef EntityVec::iterator EViterator;
+	Direction m_lastMove;
   
 private:
   // TODO: add fields
