@@ -49,39 +49,34 @@ Direction AStarChaseHero::getMoveDirection(Game *game, Entity *entity) {
 	std::map<Position, Position> pathMap = pathCreator->search();
 	std::vector<Position> reversePath;
 	Position wanted = hp;
-	for(std::map<Position, Position>::iterator it = pathMap.begin(); it != pathMap.end(); ++it) {
-		if (it->first == wanted) {
-			reversePath.push_back(it->first);
-			wanted = it->second;
-			std::cout << wanted << std::endl;
-			std::cout << it->first << " " << it->second << std::endl;
-			if (wanted == mp) break;
-		}
+	while (wanted != mp) {
+			reversePath.push_back(wanted);
+			wanted = pathMap[wanted];
 	}
 	std::reverse(reversePath.begin(), reversePath.end());
 
-	//int x_new = reversePath.at(1).getX();
-	//int y_new = reversePath.at(1).getY();
+	int x_new = reversePath.at(0).getX();
+	int y_new = reversePath.at(0).getY();
 
-	//int y_diff = y_new - y_m;
-	//int x_diff = x_new - x_m;
+	int y_diff = y_new - y_m;
+	int x_diff = x_new - x_m;
 
-	//if (y_new == y_m) {
-		//if (x_diff < 0) {	
-			//direction = Direction::LEFT;			
-		//}
-		//else if(x_diff > 0) {
-			//direction = Direction::RIGHT;		
-		//}
-	//}
-	//else if(x_new == x_m) {
-		//if(y_diff < 0) {
-			//direction = Direction::UP;
-		//}
-		//else if(y_diff > 0) {
-			//direction = Direction::DOWN;
-		//}
-	//}
+	if (y_new == y_m) {
+		if (x_diff < 0) {	
+			direction = Direction::LEFT;			
+		}
+		else if(x_diff > 0) {
+			direction = Direction::RIGHT;		
+		}
+	}
+	else if(x_new == x_m) {
+		if(y_diff < 0) {
+			direction = Direction::UP;
+		}
+		else if(y_diff > 0) {
+			direction = Direction::DOWN;
+		}
+	}
 
   return direction;
 }

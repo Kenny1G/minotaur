@@ -18,6 +18,7 @@ typedef struct {
   std::priority_queue<PQElement, std::vector<PQElement>,
                  std::greater<PQElement>> elements;
 
+
   inline bool empty() const {
      return elements.empty();
   }
@@ -70,7 +71,6 @@ std::map<Position, Position> AStar::search() {
       }
     }
   }
-
   return camefrom;
 }
 
@@ -88,7 +88,7 @@ vector<Position> AStar::checkNeighbors(Position source) {
   for (int i = 0; i < m_maze->getHeight(); i++) {
     for (int c = 0; c < m_maze->getWidth(); c++) {
       Position *curr = new Position (c, i);
-      if(std::abs(source.getX() - curr->getX()) == 1 && source.getY() - curr->getY() == 0 || std::abs(source.getY() - curr->getY()) == 1 && source.getX() - curr->getX() == 0) {
+      if((std::abs(source.getX() - curr->getX()) == 1 && source.getY() - curr->getY() == 0) || (std::abs(source.getY() - curr->getY()) == 1 && source.getX() - curr->getX() == 0)) {
 	if (m_maze->getTile(*curr)->checkMoveOnto(victoria, source, *curr) == MoveResult::ALLOW) {
 	    neigh.push_back(*curr);
 	    delete curr;
