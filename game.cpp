@@ -13,11 +13,11 @@
 #include <sstream>
 
 Game::Game():
+m_lastMove(Direction::NONE),
 m_maze(nullptr),
 m_ui(nullptr),
 m_gameRules(nullptr),
-m_entities(new EntityVec),
-m_lastMove(Direction::NONE)
+m_entities(new EntityVec)
 {}
 Game::~Game() {
 	for (EntityVec::iterator it = m_entities->begin(); it != m_entities->end(); ++it) {

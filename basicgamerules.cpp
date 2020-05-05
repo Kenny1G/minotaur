@@ -37,6 +37,9 @@ bool BasicGameRules::allowMove(Game *game, Entity *actor, const Position &source
 				else if(en->hasProperty('m')) {
 					move = true;
 				}
+				else if (en->hasProperty('h') && actor->hasProperty('m')) {
+					move = true;
+				}
 			}
 			else {
 				move = true;
