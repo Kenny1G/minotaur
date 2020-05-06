@@ -25,7 +25,7 @@ public:
 
 private:
   int h(Position);
-  std::vector<Position> checkNeighbors(Position source);
+  std::vector<Position> getNeighbors(Position source);
 
 };
   

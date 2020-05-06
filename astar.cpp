@@ -60,8 +60,11 @@ std::map<Position, Position> AStar::search() {
     if (curr == *m_goal){
       break;
     }
+		for (std::vector<Position>::iterator it = getNeighbors(curr).begin(); it != getNeighbors(curr).end(); it++) {
+			std::cout << it->getX() << " " << it->getY() <<std::endl;
+		}
     
-    for(Position next : checkNeighbors(curr)){
+    for(Position next : getNeighbors(curr)){
       int new_cost = cost_so_far[curr] + 1;
       if(cost_so_far.find(next) == cost_so_far.end() || new_cost < cost_so_far[next]){
 					cost_so_far[next] = new_cost;
@@ -80,7 +83,7 @@ int AStar::h(Position source) {
   return d;
 }
 
-vector<Position> AStar::checkNeighbors(Position source) {
+vector<Position> AStar::getNeighbors(Position source) {
   Entity *victoria = new Entity();
   vector<Position> neigh;
   victoria->setPosition(source);
@@ -89,10 +92,10 @@ vector<Position> AStar::checkNeighbors(Position source) {
     for (int c = 0; c < m_maze->getWidth(); c++) {
       Position *curr = new Position (c, i);
       if((std::abs(source.getX() - curr->getX()) == 1 && source.getY() - curr->getY() == 0) || (std::abs(source.getY() - curr->getY()) == 1 && source.getX() - curr->getX() == 0)) {
-	if (m_maze->getTile(*curr)->checkMoveOnto(victoria, source, *curr) == MoveResult::ALLOW) {
-	    neigh.push_back(*curr);
-	    delete curr;
-	}
+				if (m_maze->getTile(*curr)->checkMoveOnto(victoria, source, *curr) == MoveResult::ALLOW) {
+						neigh.push_back(*curr);
+						delete curr;
+				}
       }
     }
   }
