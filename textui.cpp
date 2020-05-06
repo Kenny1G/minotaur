@@ -59,11 +59,7 @@ void TextUI::render(Game *game) {
 	}
   
   if (!m_msg.empty()) {
-		std::cout << m_msg;
-		if(game->getGameRules()->checkGameResult(game) == GameResult::UNKNOWN) {
-			std::cout << ": ";
-		}
-		std::cout << std::endl;
+			std::cout << ": " << m_msg << std::endl;
     m_msg = "";
   }
 }
