@@ -84,24 +84,13 @@ void BasicGameRules::enactMove(Game *game, Entity *actor, const Position &dest) 
 GameResult BasicGameRules::checkGameResult(Game *game) const {
   GameResult result = GameResult::UNKNOWN;
   Game::EntityVec h_vec = game->getEntitiesWithProperty('h');
-  Game::EntityVec m_vec = game->getEntitiesWithProperty('m');
-  
   Entity *h = h_vec[0];
-	Entity *m = nullptr;
-	if (!m_vec.empty()) {
-		m = m_vec[0]; //death awayits you
-	}
-	
-  Position mp;
   Position hp = h->getPosition();
-  if (m != nullptr) {
-		mp = m->getPosition();
-	} 
 
   if(game->getMaze()->getTile(hp)->isGoal()){
     result = GameResult::HERO_WINS;
   }
-  else if(m != nullptr && hp == mp) {
+  else if(game->getEntityAt(hp)->hasProperty('m')) {
     result = GameResult::HERO_LOSES;
   }
   return result;
