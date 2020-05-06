@@ -30,7 +30,7 @@ Direction TextUI::getMoveDirection() {
     case ('l'): return Direction::LEFT;
     case ('r'): return Direction::RIGHT;
     default:
-     std::cout << "Unknown direction ";
+     std::cout << "Unknown direction";
      return getMoveDirection();
   }
 }
