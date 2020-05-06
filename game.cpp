@@ -80,10 +80,10 @@ void Game::gameLoop() {
 		}
 	}
 	if (result == GameResult::HERO_LOSES) {
-		m_ui->displayMessage("Hero Loses");
+		m_ui->displayMessage("Hero loses");
 	} 
 	else {
-		m_ui->displayMessage("Hero Wins");
+		m_ui->displayMessage("Hero wins");
 	}
 	m_ui->render(this);
 
