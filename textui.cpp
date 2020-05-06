@@ -7,6 +7,7 @@
 #include "wall.h"
 #include "goal.h"
 #include "entity.h"
+#include "gamerules.h"
 #include <iostream>
 #include <sstream>
 
@@ -29,7 +30,7 @@ Direction TextUI::getMoveDirection() {
     case ('l'): return Direction::LEFT;
     case ('r'): return Direction::RIGHT;
     default:
-     std::cout << "Unknown direction";
+     std::cout << "Unknown direction ";
      return getMoveDirection();
   }
 }
@@ -58,7 +59,11 @@ void TextUI::render(Game *game) {
 	}
   
   if (!m_msg.empty()) {
-    std::cout << m_msg << ": " <<std::endl;
+		std::cout << m_msg;
+		if(game->getGameRules()->checkGameResult(game) == GameResult::UNKNOWN) {
+			std::cout << ": ";
+		}
+		std::cout << std::endl;
     m_msg = "";
   }
 }
