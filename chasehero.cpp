@@ -64,30 +64,55 @@ Direction ChaseHero::getMoveDirection(Game *game, Entity *entity) {
   if (y_dif < 0) {
     y_dif_abs = -y_dif_abs;
   }
-  
+  bool moveHorizontal = true;
+	bool moveVertical = true;
   //dertemine direction
-  if (x_dif_abs > y_dif_abs){
-    if (x_dif < 0) {
-      direction = Direction::LEFT;
+  if (x_dif_abs > y_dif_abs || x_dif_abs == y_dif_abs){
+		if (x_dif < 0) {
+			if(game->getGameRules()->allowMove(game, entity,mp, mp.displace(Direction::LEFT))) {
+				direction = Direction::LEFT;
+			}
+			else {
+				moveHorizontal = false;
+			}
     }
     else if (x_dif > 0){
-      direction = Direction::RIGHT;
+			if(game->getGameRules()->allowMove(game, entity,mp, mp.displace(Direction::RIGHT))) {
+				direction = Direction::RIGHT;
+			}
+			else {
+				moveHorizontal = false;
+			}
     }
   }
-  else if (x_dif_abs < y_dif_abs) {
-        if (y_dif < 0) {
-      direction = Direction::UP;
-    }
-    else if (y_dif > 0){
-      direction = Direction::DOWN;
+  if (x_dif_abs < y_dif_abs || (!moveHorizontal && y_dif_abs!= 0)) {
+			if (y_dif < 0) {
+				if(game->getGameRules()->allowMove(game, entity,mp, mp.displace(Direction::UP))) {
+					direction = Direction::UP;
+				}
+				else {
+					moveVertical = false;
+				}
+			}
+    else if (y_dif > 0 || !moveHorizontal){
+			if(game->getGameRules()->allowMove(game, entity,mp, mp.displace(Direction::DOWN))) {
+				direction = Direction::DOWN;
+			}
+			else {
+				moveVertical = false;
+			}
     }
   }
-  else {
-    if (x_dif < 0) {
-      direction = Direction::LEFT;
+  if (!moveVertical && x_dif_abs != 0){
+		if (x_dif < 0) {
+			if(game->getGameRules()->allowMove(game, entity,mp, mp.displace(Direction::LEFT))) {
+				direction = Direction::LEFT;
+			}
     }
-    else {
-      direction = Direction::RIGHT;
+    else if (x_dif > 0){
+			if(game->getGameRules()->allowMove(game, entity,mp, mp.displace(Direction::RIGHT))) {
+				direction = Direction::RIGHT;
+			}
     }
   }
 
