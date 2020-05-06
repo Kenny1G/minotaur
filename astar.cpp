@@ -60,9 +60,6 @@ std::map<Position, Position> AStar::search() {
     if (curr == *m_goal){
       break;
     }
-		for (std::vector<Position>::iterator it = getNeighbors(curr).begin(); it != getNeighbors(curr).end(); it++) {
-			std::cout << it->getX() << " " << it->getY() <<std::endl;
-		}
     
     for(Position next : getNeighbors(curr)){
       int new_cost = cost_so_far[curr] + 1;
