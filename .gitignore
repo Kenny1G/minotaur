@@ -6,3 +6,7 @@ tiletest
 mazetest
 gametest
 .vscode/
+data/*
+expected/*
+actual/*
+input/*
