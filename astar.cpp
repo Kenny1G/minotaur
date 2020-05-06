@@ -8,6 +8,7 @@
 #include "tile.h"
 #include "maze.h"
 #include "entity.h"
+#include "gamerules.h"
 #include <queue>
 #include <map>
 
@@ -36,7 +37,8 @@ typedef struct {
 
 using std::vector; using std::priority_queue; using std::map;
 
-AStar::AStar(Maze *maze, Position *start, Position *goal):
+AStar::AStar(Game* game, Maze *maze, Position *start, Position *goal):
+m_game(game),
 m_maze(maze),
 m_start(start),
 m_goal(goal) {
@@ -84,12 +86,19 @@ vector<Position> AStar::getNeighbors(Position source) {
   Entity *victoria = new Entity();
   vector<Position> neigh;
   victoria->setPosition(source);
-
+	victoria->setProperties("m");
   for (int i = 0; i < m_maze->getHeight(); i++) {
     for (int c = 0; c < m_maze->getWidth(); c++) {
       Position *curr = new Position (c, i);
       if((std::abs(source.getX() - curr->getX()) == 1 && source.getY() - curr->getY() == 0) || (std::abs(source.getY() - curr->getY()) == 1 && source.getX() - curr->getX() == 0)) {
-				if (m_maze->getTile(*curr)->checkMoveOnto(victoria, source, *curr) == MoveResult::ALLOW) {
+				if (/*m_maze->getTile(*curr)->checkMoveOnto(victoria, source, *curr) == MoveResult::ALLOW*/
+				m_game->getGameRules()->allowMove(m_game,victoria, source, *curr)) {
+					//if (m_game->getEntityAt(*curr)->getGlyph() == "*")
+					//{
+						////get position of minotaur relative to *
+						//// infer what direciton the min will move * from above
+						//// check if move in that direction is allowed
+					//}
 						neigh.push_back(*curr);
 						delete curr;
 				}

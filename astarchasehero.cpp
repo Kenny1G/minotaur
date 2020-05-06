@@ -45,7 +45,7 @@ Direction AStarChaseHero::getMoveDirection(Game *game, Entity *entity) {
   //position of hero                                                                                
   Position hp = hero->getPosition();
 	
-	AStar *pathCreator = new AStar(game->getMaze(), &mp, &hp);
+	AStar *pathCreator = new AStar(game, game->getMaze(), &mp, &hp);
 	std::map<Position, Position> pathMap = pathCreator->search();
 	std::vector<Position> reversePath;
 	Position wanted = hp;

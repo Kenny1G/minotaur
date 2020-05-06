@@ -10,15 +10,17 @@
 
 class Maze;
 class Position;
+class Game;
 class AStar {
 private:
+	Game *m_game;
   Maze *m_maze;
   Position *m_start;
   Position *m_goal;
   AStar(const AStar &);
   AStar &operator=(const AStar &);
 public:
-  AStar(Maze*, Position*, Position*);
+  AStar(Game*, Maze*, Position*, Position*);
   ~AStar();
   
   std::map<Position, Position> search();

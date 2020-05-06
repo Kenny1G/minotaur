@@ -19,7 +19,8 @@ public:
   // Typedef to refer to a vector of pointers to Entity objects
   typedef std::vector<Entity *> EntityVec;
   typedef EntityVec::iterator EViterator;
-	Direction m_lastMove;
+	Direction m_HerolastMove;
+	Direction m_MinlastMove;
   
 private:
   // TODO: add fields

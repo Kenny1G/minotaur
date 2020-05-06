@@ -13,7 +13,8 @@
 #include <sstream>
 
 Game::Game():
-m_lastMove(Direction::NONE),
+m_HerolastMove(Direction::NONE),
+m_MinlastMove(Direction::NONE),
 m_maze(nullptr),
 m_ui(nullptr),
 m_gameRules(nullptr),
@@ -97,8 +98,11 @@ void Game::takeTurn(Entity *actor) {
 	EntityController *controller = actor->getController();
 
 	Direction toWherestDoIGo = controller->getMoveDirection(this, actor);
-	if(!actor->hasProperty('v')) {
-		m_lastMove = toWherestDoIGo;
+	if(actor->hasProperty('h')) {
+		m_HerolastMove = toWherestDoIGo;
+	}
+	else if(actor->hasProperty('m')) {
+		m_MinlastMove=toWherestDoIGo;
 	}
 	Position fromWherestDoICome = actor->getPosition();
 	int x = fromWherestDoICome.getX();

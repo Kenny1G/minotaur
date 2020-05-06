@@ -31,7 +31,14 @@ bool BasicGameRules::allowMove(Game *game, Entity *actor, const Position &source
 				if(en->hasProperty('v')) {
 					//anything can be moved so change this to use distance between source and dest
 					// rather than game->last_move
-					Position new_dest = dest.displace(game->m_lastMove);
+					Direction lastMove = Direction::NONE;
+					if(actor->hasProperty('h')) {
+						lastMove = game->m_HerolastMove;
+					}
+					else if (actor->hasProperty('m')) {
+						lastMove = game->m_MinlastMove;
+					}
+					Position new_dest = dest.displace(lastMove);
 					return allowMove(game, en, dest, new_dest);
 				}
 				else if(en->hasProperty('m')) {
@@ -53,7 +60,15 @@ void BasicGameRules::enactMove(Game *game, Entity *actor, const Position &dest) 
 	//if theres an inanimate object                                                                                                                             
 	Entity *en = game->getEntityAt(dest);
 	if(en != nullptr && en->hasProperty('v')) {
-		Position new_dest	= en->getPosition().displace(game->m_lastMove);
+		Direction lastMove = Direction::NONE;
+		if(actor->hasProperty('h')) {
+			lastMove = game->m_HerolastMove;
+		}
+		else if (actor->hasProperty('m')) {
+				lastMove = game->m_MinlastMove;
+		}
+
+		Position new_dest	= en->getPosition().displace(lastMove);
 		if(game->getGameRules()->allowMove(game, en, en->getPosition(),new_dest)) {
 			en->setPosition(new_dest);
 		}
