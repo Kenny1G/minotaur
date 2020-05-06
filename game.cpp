@@ -132,7 +132,7 @@ void Game::takeTurn(Entity *actor) {
 	}
 	else {
 		if (controller->isUser()) {
-			m_ui->displayMessage("Illegal Move",false);
+			m_ui->displayMessage("Illegal move",false);
 		}
 	}
 	delete wherestILand;
