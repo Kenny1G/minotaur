@@ -67,7 +67,7 @@ Game::EntityVec Game::getEntitiesWithProperty(char prop) const {
 // an Entity whose EntityController is controlled by the user takes
 // a turn.
 void Game::gameLoop() {
-	GameResult result = m_gameRules->checkGameResult(this);
+	GameResult result = GameResult::UNKNOWN;
 	while (result == GameResult::UNKNOWN) {
 		for (EntityVec::iterator it = m_entities->begin(); it != m_entities->end(); ++it) {
 			if ((*it)->getController()->isUser()) {

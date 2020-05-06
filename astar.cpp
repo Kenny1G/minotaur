@@ -91,18 +91,11 @@ vector<Position> AStar::getNeighbors(Position source) {
     for (int c = 0; c < m_maze->getWidth(); c++) {
       Position *curr = new Position (c, i);
       if((std::abs(source.getX() - curr->getX()) == 1 && source.getY() - curr->getY() == 0) || (std::abs(source.getY() - curr->getY()) == 1 && source.getX() - curr->getX() == 0)) {
-				if (/*m_maze->getTile(*curr)->checkMoveOnto(victoria, source, *curr) == MoveResult::ALLOW*/
-				m_game->getGameRules()->allowMove(m_game,victoria, source, *curr)) {
-					//if (m_game->getEntityAt(*curr)->getGlyph() == "*")
-					//{
-						////get position of minotaur relative to *
-						//// infer what direciton the min will move * from above
-						//// check if move in that direction is allowed
-					//}
+				if (m_game->getGameRules()->allowMove(m_game,victoria, source, *curr)) {
 						neigh.push_back(*curr);
-						delete curr;
 				}
       }
+			delete curr;
     }
   }
   delete victoria;

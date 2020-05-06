@@ -77,6 +77,7 @@ Direction AStarChaseHero::getMoveDirection(Game *game, Entity *entity) {
 			direction = Direction::DOWN;
 		}
 	}
+	delete pathCreator;
 
   return direction;
 }
