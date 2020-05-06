@@ -47,8 +47,16 @@ Direction AStarChaseHero::getMoveDirection(Game *game, Entity *entity) {
 	
 	AStar *pathCreator = new AStar(game, game->getMaze(), &mp, &hp);
 	std::map<Position, Position> pathMap = pathCreator->search();
+	if (pathMap.empty()) {
+		delete pathCreator;
+		return Direction::NONE;
+	}
 	std::vector<Position> reversePath;
 	Position wanted = hp;
+	if (pathMap.find(wanted) == pathMap.end()) {
+		delete pathCreator;
+		return Direction::NONE;
+	}
 	while (wanted != mp) {
 			reversePath.push_back(wanted);
 			wanted = pathMap[wanted];
