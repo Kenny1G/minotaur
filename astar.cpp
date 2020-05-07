@@ -14,26 +14,7 @@
 
 #include <iostream>
 
-typedef struct {
-  typedef std::pair<int, Position> PQElement;
-  std::priority_queue<PQElement, std::vector<PQElement>,
-                 std::greater<PQElement>> elements;
 
-
-  inline bool empty() const {
-     return elements.empty();
-  }
-
-  inline void put(int priority,Position pos) {
-    elements.emplace(priority, pos);
-  }
-
-  Position get() {
-    Position best_item = elements.top().second;
-    elements.pop();
-    return best_item;
-  }
-}PriorityQueue;
 
 using std::vector; using std::priority_queue; using std::map;
 
@@ -47,7 +28,7 @@ m_goal(goal) {
 
 AStar::~AStar() {}
 
-std::map<Position, Position> AStar::search() {
+map<Position, Position> AStar::search() {
   PriorityQueue board;
   map<Position, Position> camefrom;
   map<Position, int> cost_so_far;

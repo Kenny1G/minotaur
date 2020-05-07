@@ -7,12 +7,33 @@
 
 #include <map>
 #include <vector>
+#include <queue>
 
 class Maze;
 class Position;
 class Game;
 class AStar {
 private:
+	typedef struct {
+		typedef std::pair<int, Position> PQElement;
+		std::priority_queue<PQElement, std::vector<PQElement>,
+									std::greater<PQElement>> elements;
+
+
+		inline bool empty() const {
+			return elements.empty();
+		}
+
+		inline void put(int priority,Position pos) {
+			elements.emplace(priority, pos);
+		}
+
+		Position get() {
+			Position best_item = elements.top().second;
+			elements.pop();
+			return best_item;
+		}
+	}PriorityQueue;
 	Game *m_game;
   Maze *m_maze;
   Position *m_start;
@@ -32,4 +53,3 @@ private:
 };
   
 #endif //ASTAR_H
-
